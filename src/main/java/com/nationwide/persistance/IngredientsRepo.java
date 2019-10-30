@@ -8,13 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.nationwide.Domain.Ingredients;
 import com.nationwide.Domain.Recipe;
 
-@Repository
-public interface RecipeRepo extends JpaRepository<Recipe,Integer>{
-	
-	public List<Recipe> orderByTime();
-	public List<Recipe> findRecipe(String name);
-	public List<Recipe> findByRecipeId(int ID);
-	
-	
-	}
-	
+	@Repository
+	public interface IngredientsRepo extends JpaRepository<Ingredients,Integer>{
+		public List<Ingredients> findAll();
+//		public int findIngId(String Ingredient);
+
+}

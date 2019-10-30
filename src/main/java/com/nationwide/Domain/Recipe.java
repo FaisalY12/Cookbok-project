@@ -1,11 +1,20 @@
 package com.nationwide.Domain;
 
+
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+
 
 
 
@@ -18,6 +27,10 @@ import javax.persistence.NamedQuery;
 		@NamedQuery(
 				name = "Recipe.findRecipe",
 				query = "Select p from Recipe p where p.name=?1"
+				),
+		@NamedQuery(
+				name = "Recipe.findByRecipeId",
+				query = "Select p from Recipe p where p.recipeid=?1"
 				)
 		 
 })
@@ -25,13 +38,16 @@ public class Recipe {
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private int recipeid;
 	private String name;
 	private String description;
 	private String instructions;
 	private int time;
 	
+//	@OneToMany
+//    public List<Ingredients> ingredient= new ArrayList<>();
+	  
 	public int getRecipeid() {
 		return recipeid;
 	}
@@ -73,5 +89,11 @@ public class Recipe {
 	}
 	public Recipe() {
 	}
+//	public List<Ingredients> getIngredient() {
+//		return ingredient;
+//	}
+//	public void setIngredient(List<Ingredients> ingredient) {
+//		this.ingredient = ingredient;
+//	}
 
 }
