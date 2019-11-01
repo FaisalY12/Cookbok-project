@@ -29,9 +29,10 @@ import javax.persistence.OneToMany;
 				query = "Select p from Recipe p where p.name=?1"
 				),
 		@NamedQuery(
-				name = "Recipe.findByRecipeId",
-				query = "Select p from Recipe p where p.recipeid=?1"
+				name = "Recipe.findRecipeId",
+				query = "Select p.recipeid from Recipe p where p.name=?1"
 				)
+		
 		 
 })
 public class Recipe {
@@ -45,8 +46,6 @@ public class Recipe {
 	private String instructions;
 	private int time;
 	
-//	@OneToMany
-//    public List<Ingredients> ingredient= new ArrayList<>();
 	  
 	public int getRecipeid() {
 		return recipeid;

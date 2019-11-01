@@ -41,13 +41,22 @@ public class RecipeService {
 		return repository.save(Recipetoupdate);
 	}
 
-	public String deleteRecipe(int recipetodelete) {
-		repository.deleteById(recipetodelete);
+	public String deleteRecipe(String name) {
+		int a = repository.findRecipeId(name);
+		repository.deleteById(a);
 		return "deleted succesfully";
 	}
 
 	public List<Recipe> findRecipe(String recipe) {
 		return repository.findRecipe(recipe);
+	}
+	
+	public List<Recipe> findByOrderByTimeAsc() {
+		return repository.findByOrderByTimeAsc();
+	}
+	
+	public List<Recipe> findByOrderByTimeDesc() {
+		return repository.findByOrderByTimeDesc();
 	}
 
 }

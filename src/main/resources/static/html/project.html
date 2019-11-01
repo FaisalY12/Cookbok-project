@@ -1,56 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Project</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script>
+
+getInfo();
+
+    let responseString;
+
+function getInfo(){
+  let request = new XMLHttpRequest();
+  request.open("GET","http://localhost:9001/allRecipe");
+  request.setRequestHeader("content-type", "application/JSON");
+  request.onload=function(){
+    renderData(JSON.parse(request.response));  
+  }
+  request.send();
+}
+
+function renderData(jsData){
+ // alert("tree");
+  let list=document.getElementById("recipelist");
+  list.innerHTML="";
+  for(let recipe of jsData){
+    let listitem=document.createElement("li");
+    listitem.innerHTML=recipe.name + "..."+ recipe.description;
+    listitem.innerHTML+=`<button class='btn btn-warning' onclick="deleterecipe('${recipe.name}')"> delete </buttoin>`;
+    //sa href='"+recipe.name+"'> delete </a>";
+    list.appendChild(listitem);
+  }
+}
+
+function deleterecipe(reciepe){
+  //alert(reciepe);
+  var Http=new XMLHttpRequest();
+  Http.open("DELETE","http://localhost:9001/deleteRecipe/"+reciepe);
+  Http.onreadystatechange=function(e){
+      if (Http.readyState==4){
+        alert("I am back");
+        getInfo();
+      }
+  }
+  Http.send();
+}
+
+function postData(form){
+    let body={};
+  for(let inputty of form){
+    if(inputty.name){
+    body[inputty.name]=inputty.value;
+    }
+  }
+  responseString = JSON.stringify(body);
+  let request = new XMLHttpRequest();
+  request.open("POST","http://localhost:9001/addRecipe");
+  request.setRequestHeader("content-type", "application/JSON");
+  request.onload=function(){
+    getInfo();
+  }
+  request.send(responseString); 
+}
+
+function getInfoforRecipe(recipe){
+  let request = new XMLHttpRequest();
+  request.open("GET","http://localhost:9001/findrecipe"+recipe);
+  request.setRequestHeader("content-type", "application/JSON");
+  request.onreadystatechange=function(e){
+      if (request.readyState==4){
+        renderData(JSON.parse(request.response));
+      }
+}
+  request.send();
+}
+
+
+
+  </script>
+
+
+
+
 </head>
 <body>
-
+ 
   <div>
 <nav class="navbar navbar-expand-sm bg-light navbar-blue">
-  <a class="navbar-brand" href="file:///C:/Users/admin/Documents/workspace-spring-tool-suite-4-4.4.0.RELEASE/Project/src/main/resources/static/Project.html">Home</a>
+  <a class="navbar-brand" href="#">Home</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
+        <li>
+
+        </li>
       <li class="nav-item">
-        <a class="nav-item" href="file:///C:/Users/admin/Documents/workspace-spring-tool-suite-4-4.4.0.RELEASE/Project/src/main/resources/static/Project.html">Home</a>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+          Add Recipe
+        </button>
+      </li>
+       <li class="nav-item">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal2">
+          Update Recipe
+        </button>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href=file:///C:/Users/admin/Documents/workspace-spring-tool-suite-4-4.4.0.RELEASE/Project/src/main/resources/static/AllRecipes.html>All Recipes</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="file:///C:/Users/admin/Documents/workspace-spring-tool-suite-4-4.4.0.RELEASE/Project/src/main/resources/static/addRecipe.html">Add Recipe</a>
-      </li>    
+        <form onsubmit="return postData(this)" class="form-inline" action="/action_page.php" justify-content-center>
+        <input name = "recipe search" class="form-control mr-sm-2" type="text" placeholder="Search">
+        <button class="btn btn-info" type="submit">Search</button>
+        </form> 
+        </li>
     </ul>
   </div>  
 </nav>
 </div>
 
-<div class="jumbotron text-center">
-  <h1>Cookbook</h1>
-  <p>Resize this responsive page to see the effect!</p> 
+<div class="jumbotron text-center" style="background-image: url(https://static.independent.co.uk/s3fs-public/thumbnails/image/2019/07/18/15/istock-855098134.jpg?w968)">
+  <h1 class="text-white"><dt>Cookbook</dt></h1>
+  <p></p> 
 </div>
-  
-<div class="container">
-  <div class="row">
-    <div class="col-sm-8">
-      <h3>Column 1</h3>
-      <p>
-        <ul id="recipelist">
 
-        </ul>
-      </p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+<!-- The Modal -->
+<div class="modal" id="myModal" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form onsubmit="return postData(this)" align="center">
+          <input name="name" type="text" placeholder="enter name">
+          <br><br>
+          <textarea class="form-control" rows="3" columns="65" name="description" type="text"  placeholder="enter description"></textarea>
+          <br>
+         <textarea class="form-control" rows="3" columns="65"name="instructions"  placeholder="enter instructions"></textarea>
+          <br>
+          <textarea class="form-control" rows="3" columns="65" name="time" type="text"  placeholder="enter estimated time"></textarea>
+          <br>
+          <button type="submit" class="btn btn-success"> Submit</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
     </div>
   </div>
 </div>
+
+<!-- The Modal -->
+<div class="modal" id="myModal2">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form onsubmit="return postData(this)">
+          <input name="name" type="text" placeholder="enter name to update">
+          <input name="description" type="text"  placeholder="enter description to update">
+          <input name="instructions" type="text"  placeholder="enter instructions to update">
+          <input name="time" type="text"  placeholder="enter estimated time to update">
+          <button type="submit" class="btn btn-success"> Submit</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col"></div>
+    <div class="col">
+    <button type="button" class="btn btn-outline-info dropdown-toggle float-left>" data-toggle="dropdown">
+      Sort
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Time (ASC)</a>
+      <a class="dropdown-item" href="#">Time (DESC)</a>
+    </div>
+    </div>
+  </div>
+</div>
+
+
+  
+<div class="container">
+    <div class="col-sm-4">
+      <h3>Recipes</h3>        
+      <ul id ="recipelist">
+        
+      </ul>
+      <p>Add recipe</p>
+    </div>
+  </div>
 
 
 

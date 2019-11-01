@@ -55,7 +55,12 @@ public class RecipeController {
 	
 	@GetMapping("sortByDescTime")
 	public List<Recipe> recipeByTime() {
-		return recipeService.RecipeByTime();
+		return recipeService.findByOrderByTimeDesc();
+	}
+	
+	@GetMapping("sortByAscTime")
+	public List<Recipe> recipeByAscTime() {
+		return recipeService.findByOrderByTimeAsc();
 	}
 	
 	@GetMapping("findrecipe/{recipe}")
@@ -73,7 +78,7 @@ public class RecipeController {
 		return recipeService.updateRecipe(Recipetoupdate);
 	}
 	@DeleteMapping(value="deleteRecipe/{recipetodelete}")
-	public String deleteRecipe(@PathVariable int recipetodelete) {
+	public String deleteRecipe(@PathVariable String recipetodelete) {
 		return  recipeService.deleteRecipe(recipetodelete);
 	}
 	

@@ -13,8 +13,10 @@ public interface RecipeRepo extends JpaRepository<Recipe,Integer>{
 	
 	public List<Recipe> orderByTime();
 	public List<Recipe> findRecipe(String name);
-	public List<Recipe> findByRecipeId(int ID);
-	
+	public int findRecipeId(String name);
+
+	public List<Recipe> findByOrderByTimeAsc();
+	public List<Recipe> findByOrderByTimeDesc();
 	
 	}
 	
