@@ -68,6 +68,12 @@ public class RecipeController {
 		return recipeService.findRecipe(recipe);
 	}
 	
+	@GetMapping("findrecipeid/{recipe}")
+	public int findRecipeId(@PathVariable String recipe) {
+		return recipeService.findRecipeId(recipe);
+		
+	}
+	
 	@PostMapping(value="addRecipe")
 	public Recipe addNewRecipe(@RequestBody Recipe recipetosave){
 		return recipeService.addNewRecipe(recipetosave);
@@ -80,6 +86,11 @@ public class RecipeController {
 	@DeleteMapping(value="deleteRecipe/{recipetodelete}")
 	public String deleteRecipe(@PathVariable String recipetodelete) {
 		return  recipeService.deleteRecipe(recipetodelete);
+	}
+	
+	@DeleteMapping(value="deleteRecipebyid/{recipeid}")
+	public String deleteRecipe1(@PathVariable int recipeid) {
+		return  recipeService.deleteRecipebyId(recipeid);
 	}
 	
 	

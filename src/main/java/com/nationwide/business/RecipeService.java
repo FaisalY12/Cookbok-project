@@ -28,10 +28,9 @@ public class RecipeService {
 		return repository.orderByTime();
 	}
 	
-//	public List<Recipe> findByIngredient(String ingredient){
-//		int ID =repository1.findIngId(ingredient);
-//		return repository.findByRecipeId(ID);
-//	}
+	public int findRecipeId(String n) {
+		return repository.findRecipeId(n);
+	}
 
 	public Recipe addNewRecipe(Recipe recipetosave) {
 		return repository.save(recipetosave);
@@ -58,5 +57,11 @@ public class RecipeService {
 	public List<Recipe> findByOrderByTimeDesc() {
 		return repository.findByOrderByTimeDesc();
 	}
+	
+	public String deleteRecipebyId(int id) {
+		repository.deleteById(id);
+		return "deleted succesfully";
+	}
+
 
 }

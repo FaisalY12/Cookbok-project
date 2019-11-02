@@ -12,6 +12,7 @@
 
 getInfo();
 
+
     let responseString;
 
 function getInfo(){
@@ -30,9 +31,9 @@ function renderData(jsData){
   list.innerHTML="";
   for(let recipe of jsData){
     let listitem=document.createElement("li");
-    listitem.innerHTML=recipe.name + "..."+ recipe.description;
-    listitem.innerHTML+=`<button class='btn btn-warning' onclick="deleterecipe('${recipe.name}')"> delete </buttoin>`;
-    //sa href='"+recipe.name+"'> delete </a>";
+    listitem.innerHTML=recipe.name + "    "+ recipe.description + "    " ;
+    listitem.innerHTML+=`<button class='btn btn-warning' onclick="deleterecipe('${recipe.recipeid}')"> delete </button>`
+    listitem.innerHTML+=`<button class='btn btn-warning' data-toggle="modal" data-target="#myModal2" onclick="getid('${recipe.recipeid}')"> edit </button>`
     list.appendChild(listitem);
   }
 }
@@ -40,7 +41,7 @@ function renderData(jsData){
 function deleterecipe(reciepe){
   //alert(reciepe);
   var Http=new XMLHttpRequest();
-  Http.open("DELETE","http://localhost:9001/deleteRecipe/"+reciepe);
+  Http.open("DELETE","http://localhost:9001/deleteRecipebyid/"+reciepe);
   Http.onreadystatechange=function(e){
       if (Http.readyState==4){
         alert("I am back");
@@ -67,18 +68,44 @@ function postData(form){
   request.send(responseString); 
 }
 
-function getInfoforRecipe(recipe){
-  let request = new XMLHttpRequest();
-  request.open("GET","http://localhost:9001/findrecipe"+recipe);
-  request.setRequestHeader("content-type", "application/JSON");
-  request.onreadystatechange=function(e){
-      if (request.readyState==4){
-        renderData(JSON.parse(request.response));
-      }
-}
-  request.send();
+function getid(recipeid){
+  let id=recipeid;
+  let list=document.getElementById("p11");
+  list.innerHTML=id;
+  console.log(document.getElementById("p11").innerText);
 }
 
+function updateData(form){
+    let body={};
+    body["recipeid"]=document.getElementById("p11").innerText;
+  for(let inputty of form){
+    if(inputty.name){
+    body[inputty.name]=inputty.value;
+    }
+  }
+  responseString = JSON.stringify(body);
+  let request = new XMLHttpRequest();
+  request.open("POST","http://localhost:9001/addRecipe");
+  request.setRequestHeader("content-type", "application/JSON");
+  request.onload=function(){
+    getInfo();
+  }
+  request.send(responseString); 
+}
+
+
+function getInfoforRecipe(form){
+  console.log("hhhh");
+  // let request = new XMLHttpRequest();
+  // request.open("GET","http://localhost:9001/findrecipe/"+recipe);
+  // request.setRequestHeader("Content-Type", "application/JSON");
+  // request.onload=function(){
+  //   renderData(JSON.parse(request.response));  
+  // }
+  // request.send();
+}
+
+  
 
 
   </script>
@@ -111,8 +138,8 @@ function getInfoforRecipe(recipe){
         </button>
       </li>
       <li class="nav-item">
-        <form onsubmit="return postData(this)" class="form-inline" action="/action_page.php" justify-content-center>
-        <input name = "recipe search" class="form-control mr-sm-2" type="text" placeholder="Search">
+        <form onsubmit="return getInfoforRecipe(this)" class="form-inline" justify-content-center>
+        <input name = "recipe search" class="form-control " type="text" placeholder="Search">
         <button class="btn btn-info" type="submit">Search</button>
         </form> 
         </li>
@@ -174,7 +201,8 @@ function getInfoforRecipe(recipe){
 
       <!-- Modal body -->
       <div class="modal-body">
-        <form onsubmit="return postData(this)">
+        <form onsubmit="return updateData(this)" id="updater">
+          <p name="recipeid" id="p11">Hello World!</p>
           <input name="name" type="text" placeholder="enter name to update">
           <input name="description" type="text"  placeholder="enter description to update">
           <input name="instructions" type="text"  placeholder="enter instructions to update">
