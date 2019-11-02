@@ -62,12 +62,12 @@ public class RecipeController {
 	public List<Recipe> recipeByAscTime() {
 		return recipeService.findByOrderByTimeAsc();
 	}
-	
+	@CrossOrigin("*")
 	@GetMapping("findrecipe/{recipe}")
 	public List<Recipe> findRecipe(@PathVariable String recipe) {
 		return recipeService.findRecipe(recipe);
 	}
-	
+	@CrossOrigin("*")
 	@GetMapping("findrecipeid/{recipe}")
 	public int findRecipeId(@PathVariable String recipe) {
 		return recipeService.findRecipeId(recipe);

@@ -94,15 +94,16 @@ function updateData(form){
 }
 
 
-function getInfoforRecipe(form){
-  console.log("hhhh");
-  // let request = new XMLHttpRequest();
-  // request.open("GET","http://localhost:9001/findrecipe/"+recipe);
-  // request.setRequestHeader("Content-Type", "application/JSON");
-  // request.onload=function(){
-  //   renderData(JSON.parse(request.response));  
-  // }
-  // request.send();
+function getInfoforRecipe(){
+  let r = document.getElementById("searchrecipe");
+  console.log(r.value);
+  let req = new XMLHttpRequest();
+  req.open("GET","http://localhost:9001/findrecipe/"+r.value);
+  req.setRequestHeader("Content-Type", "application/JSON");
+  req.onload=function(){
+    renderData(JSON.parse(req.response));  
+  }
+  req.send();
 }
 
   
@@ -118,7 +119,7 @@ function getInfoforRecipe(form){
  
   <div>
 <nav class="navbar navbar-expand-sm bg-light navbar-blue">
-  <a class="navbar-brand" href="#">Home</a>
+  <button class="navbar-brand" onclick= getInfo()> Home </button>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -138,9 +139,9 @@ function getInfoforRecipe(form){
         </button>
       </li>
       <li class="nav-item">
-        <form onsubmit="return getInfoforRecipe(this)" class="form-inline" justify-content-center>
-        <input name = "recipe search" class="form-control " type="text" placeholder="Search">
-        <button class="btn btn-info" type="submit">Search</button>
+        <form  class="form-inline" justify-content-center>
+        <input name = "recipe search" class="form-control " type="text" placeholder="Search" id="searchrecipe">
+        <button class="btn btn-info" onclick=getInfoforRecipe() type="button">Search</button>
         </form> 
         </li>
     </ul>
