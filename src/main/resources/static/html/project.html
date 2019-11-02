@@ -8,112 +8,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script>
-
-getInfo();
-
-
-    let responseString;
-
-function getInfo(){
-  let request = new XMLHttpRequest();
-  request.open("GET","http://localhost:9001/allRecipe");
-  request.setRequestHeader("content-type", "application/JSON");
-  request.onload=function(){
-    renderData(JSON.parse(request.response));  
-  }
-  request.send();
-}
-
-function renderData(jsData){
- // alert("tree");
-  let list=document.getElementById("recipelist");
-  list.innerHTML="";
-  for(let recipe of jsData){
-    let listitem=document.createElement("li");
-    listitem.innerHTML=recipe.name + "    "+ recipe.description + "    " ;
-    listitem.innerHTML+=`<button class='btn btn-warning' onclick="deleterecipe('${recipe.recipeid}')"> delete </button>`
-    listitem.innerHTML+=`<button class='btn btn-warning' data-toggle="modal" data-target="#myModal2" onclick="getid('${recipe.recipeid}')"> edit </button>`
-    list.appendChild(listitem);
-  }
-}
-
-function deleterecipe(reciepe){
-  //alert(reciepe);
-  var Http=new XMLHttpRequest();
-  Http.open("DELETE","http://localhost:9001/deleteRecipebyid/"+reciepe);
-  Http.onreadystatechange=function(e){
-      if (Http.readyState==4){
-        alert("I am back");
-        getInfo();
-      }
-  }
-  Http.send();
-}
-
-function postData(form){
-    let body={};
-  for(let inputty of form){
-    if(inputty.name){
-    body[inputty.name]=inputty.value;
-    }
-  }
-  responseString = JSON.stringify(body);
-  let request = new XMLHttpRequest();
-  request.open("POST","http://localhost:9001/addRecipe");
-  request.setRequestHeader("content-type", "application/JSON");
-  request.onload=function(){
-    getInfo();
-  }
-  request.send(responseString); 
-}
-
-function getid(recipeid){
-  let id=recipeid;
-  let list=document.getElementById("p11");
-  list.innerHTML=id;
-  console.log(document.getElementById("p11").innerText);
-}
-
-function updateData(form){
-    let body={};
-    body["recipeid"]=document.getElementById("p11").innerText;
-  for(let inputty of form){
-    if(inputty.name){
-    body[inputty.name]=inputty.value;
-    }
-  }
-  responseString = JSON.stringify(body);
-  let request = new XMLHttpRequest();
-  request.open("POST","http://localhost:9001/addRecipe");
-  request.setRequestHeader("content-type", "application/JSON");
-  request.onload=function(){
-    getInfo();
-  }
-  request.send(responseString); 
-}
-
-
-function getInfoforRecipe(){
-  let r = document.getElementById("searchrecipe");
-  console.log(r.value);
-  let req = new XMLHttpRequest();
-  req.open("GET","http://localhost:9001/findrecipe/"+r.value);
-  req.setRequestHeader("Content-Type", "application/JSON");
-  req.onload=function(){
-    renderData(JSON.parse(req.response));  
-  }
-  req.send();
-}
-
-  
-
-
-  </script>
-
-
-
-
 </head>
 <body>
  
@@ -175,7 +69,6 @@ function getInfoforRecipe(){
          <textarea class="form-control" rows="3" columns="65"name="instructions"  placeholder="enter instructions"></textarea>
           <br>
           <textarea class="form-control" rows="3" columns="65" name="time" type="text"  placeholder="enter estimated time"></textarea>
-          <br>
           <button type="submit" class="btn btn-success"> Submit</button>
         </form>
       </div>
@@ -230,8 +123,8 @@ function getInfoforRecipe(){
       Sort
     </button>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">Time (ASC)</a>
-      <a class="dropdown-item" href="#">Time (DESC)</a>
+      <a class="dropdown-item" href="#"><button type="button" class="btn btn-light" id="sortByAscTime" onclick="getInfobyTime(id)">Time (ASC)</button></a>
+      <a class="dropdown-item" href="#"><button type="button" class="btn btn-light" id="sortByDescTime" onclick="getInfobyTime(id)">Time (DESC)</button></a>
     </div>
     </div>
   </div>
@@ -252,4 +145,114 @@ function getInfoforRecipe(){
 
 
 </body>
+
+<script>
+
+  getInfo();
+  
+  
+      let responseString;
+  
+  function getInfo(){
+    let request = new XMLHttpRequest();
+    request.open("GET","http://localhost:9001/allRecipe");
+    request.setRequestHeader("content-type", "application/JSON");
+    request.onload=function(){
+      renderData(JSON.parse(request.response));  
+    }
+    request.send();
+  }
+  
+  function renderData(jsData){
+   // alert("tree");
+    let list=document.getElementById("recipelist");
+    list.innerHTML="";
+    for(let recipe of jsData){
+      let listitem=document.createElement("li");
+      listitem.innerHTML=recipe.name + "    "+ recipe.description;
+      listitem.innerHTML+=`<button class='btn btn-warning' onclick="deleterecipe('${recipe.recipeid}')"> delete </button>`
+      listitem.innerHTML+=`<button class='btn btn-warning' data-toggle="modal" data-target="#myModal2" onclick="getid('${recipe.recipeid}')"> edit </button>`
+      list.appendChild(listitem);
+    }
+  }
+  
+  function deleterecipe(reciepe){
+    //alert(reciepe);
+    var Http=new XMLHttpRequest();
+    Http.open("DELETE","http://localhost:9001/deleteRecipebyid/"+reciepe);
+    Http.onreadystatechange=function(e){
+        if (Http.readyState==4){
+          alert("I am back");
+          getInfo();
+        }
+    }
+    Http.send();
+  }
+  
+  function postData(form){
+      let body={};
+    for(let inputty of form){
+      if(inputty.name){
+      body[inputty.name]=inputty.value;
+      }
+    }
+    responseString = JSON.stringify(body);
+    let request = new XMLHttpRequest();
+    request.open("POST","http://localhost:9001/addRecipe");
+    request.setRequestHeader("content-type", "application/JSON");
+    request.onload=function(){
+      getInfo();
+    }
+    request.send(responseString); 
+  }
+  
+  function getid(recipeid){
+    let id=recipeid;
+    let list=document.getElementById("p11");
+    list.innerHTML=id;
+    console.log(document.getElementById("p11").innerText);
+  }
+  
+  function updateData(form){
+      let body={};
+      body["recipeid"]=document.getElementById("p11").innerText;
+    for(let inputty of form){
+      if(inputty.name){
+      body[inputty.name]=inputty.value;
+      }
+    }
+    responseString = JSON.stringify(body);
+    let request = new XMLHttpRequest();
+    request.open("POST","http://localhost:9001/addRecipe");
+    request.setRequestHeader("content-type", "application/JSON");
+    request.onload=function(){
+      getInfo();
+    }
+    request.send(responseString); 
+  }
+  
+  
+  function getInfoforRecipe(){
+    let r = document.getElementById("searchrecipe");
+    console.log(r.value);
+    let req = new XMLHttpRequest();
+    req.open("GET","http://localhost:9001/findrecipe/"+r.value);
+    req.setRequestHeader("Content-Type", "application/JSON");
+    req.onload=function(){
+      renderData(JSON.parse(req.response));  
+    }
+    req.send();
+  }
+  
+  function getInfobyTime(id){
+    let request = new XMLHttpRequest();
+    request.open("GET","http://localhost:9001/"+id);
+    request.setRequestHeader("content-type", "application/JSON");
+    request.onload=function(){
+      renderData(JSON.parse(request.response));  
+    }
+    request.send();
+  }
+    </script>
+
 </html>
