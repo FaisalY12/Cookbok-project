@@ -42,6 +42,7 @@ public class Recipe {
 	@GeneratedValue
 	private int recipeid;
 	private String name;
+	private String piclink;
 	private String description;
 	private String instructions;
 	private int time;
@@ -94,5 +95,11 @@ public class Recipe {
 //	public void setIngredient(List<Ingredients> ingredient) {
 //		this.ingredient = ingredient;
 //	}
+	public String getPiclink() {
+		return piclink;
+	}
+	public void setPiclink(String piclink) {
+		this.piclink = piclink;
+	}
 
 }

@@ -9,33 +9,31 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <body>
  
   <div>
-<nav class="navbar navbar-expand-sm bg-light navbar-blue">
-  <button class="navbar-brand" onclick= getInfo()> Home </button>
+<nav class="navbar navbar-expand-sm bg-light navbar-blue ">
+  <button class="btn btn-outline-light text-dark" onclick= getInfo()><i class="material-icons" style="font-size:40px;color:lightgoldenrodyellow;text-shadow:2px 2px 4px #000000;">home</i></button>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <ul class="navbar-nav">
-        <li>
-
-        </li>
+    <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">
           Add Recipe
         </button>
       </li>
+    </ul>
+    <ul class="navbar-nav">
        <li class="nav-item">
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal2">
-          Update Recipe
-        </button>
+        <br>
       </li>
       <li class="nav-item">
         <form  class="form-inline" justify-content-center>
         <input name = "recipe search" class="form-control " type="text" placeholder="Search" id="searchrecipe">
-        <button class="btn btn-info" onclick=getInfoforRecipe() type="button">Search</button>
+        <button class="btn btn-warning" onclick=getInfoforRecipe() type="button">Search</button>
         </form> 
         </li>
     </ul>
@@ -43,8 +41,8 @@
 </nav>
 </div>
 
-<div class="jumbotron text-center" style="background-image: url(https://static.independent.co.uk/s3fs-public/thumbnails/image/2019/07/18/15/istock-855098134.jpg?w968)">
-  <h1 class="text-white"><dt>Cookbook</dt></h1>
+<div class="jumbotron text-center" style="background-image: url(https://cdn.drweil.com/wp-content/uploads/2015/07/videos-features_tools-quizzes_dr-weils-anti-inflammatory-diet-quiz_2716x1810_000103803369.jpg)">
+  <h1 class="display-2" style="font-family:Clarendon; color:white">Cookbook</h1>
   <p></p> 
 </div>
 
@@ -55,20 +53,21 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Modal Heading</h4>
+        <h4 class="modal-title" style="text-align:center;">Add Recipe</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
         <form onsubmit="return postData(this)" align="center">
-          <input name="name" type="text" placeholder="enter name">
+          <textarea name="name" type="text" placeholder="Enter name"></textarea>
           <br><br>
-          <textarea class="form-control" rows="3" columns="65" name="description" type="text"  placeholder="enter description"></textarea>
+          <textarea class="form-control" rows="3" columns="65" name="description" type="text"  placeholder="Enter description"></textarea>
           <br>
-         <textarea class="form-control" rows="3" columns="65"name="instructions"  placeholder="enter instructions"></textarea>
+         <textarea class="form-control" rows="3" columns="65"name="instructions"  placeholder="Enter instructions"></textarea>
           <br>
-          <textarea class="form-control" rows="3" columns="65" name="time" type="text"  placeholder="enter estimated time"></textarea>
+          <input class="form-control" rows="2" columns="80" name="time" type="text"  placeholder="Time(mins)"></input>
+          <br>
           <button type="submit" class="btn btn-success"> Submit</button>
         </form>
       </div>
@@ -89,19 +88,25 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Modal Heading</h4>
+        <h4 class="modal-title" >Update Recipe</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-        <form onsubmit="return updateData(this)" id="updater">
+        <form onsubmit="return updateData(this)" id="updater" align="center">
+          <p align ="center">Recipe ID</p>
           <p name="recipeid" id="p11">Hello World!</p>
-          <input name="name" type="text" placeholder="enter name to update">
-          <input name="description" type="text"  placeholder="enter description to update">
-          <input name="instructions" type="text"  placeholder="enter instructions to update">
-          <input name="time" type="text"  placeholder="enter estimated time to update">
+          <textarea name="name" type="text" placeholder="Enter name"></textarea>
+          <br><br>
+          <textarea class="form-control" rows="3" columns="65" name="description" type="text"  placeholder="Enter description"></textarea>
+          <br>
+         <textarea class="form-control" rows="3" columns="65"name="instructions"  placeholder="Enter instructions"></textarea>
+          <br>
+          <input class="form-control" rows="2" columns="80" name="time" type="text"  placeholder="Time(mins)"></input>
+          <br>
           <button type="submit" class="btn btn-success"> Submit</button>
+        </form>
         </form>
       </div>
 
@@ -119,7 +124,7 @@
     <div class="col"></div>
     <div class="col"></div>
     <div class="col">
-    <button type="button" class="btn btn-outline-info dropdown-toggle float-left>" data-toggle="dropdown">
+    <button type="button" class="btn btn-outline-warning dropdown-toggle float-left>" data-toggle="dropdown">
       Sort
     </button>
     <div class="dropdown-menu">
@@ -133,14 +138,47 @@
 
   
 <div class="container">
-    <div class="col-sm-4">
-      <h3>Recipes</h3>        
-      <ul id ="recipelist">
+      <h3 align="float-left" style='font-family:montserrat bold;'>Recipes</h3>        
+      <dl id ="recipelist" style="list-style-type: none;" align="center">
         
-      </ul>
-      <p>Add recipe</p>
+      </dl>
+      <p></p>
     </div>
   </div>
+
+
+
+
+  <!-- The Modal -->
+<div class="modal" id="myModal3" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header" >
+        <h4 class="font-italic" id="rname">Modal Heading</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form align="center">
+          <p class="text-left"><dt>Instructions</dt></p>
+          <p class="lead" id="rinstructions">This paragraph stands out.</p>
+          <br>
+          <p class="text-left"><dt>Time(mins)</dt></p>
+          <p class="lead" id="rtime">This paragraph stands out.</p>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 
@@ -168,10 +206,18 @@
     let list=document.getElementById("recipelist");
     list.innerHTML="";
     for(let recipe of jsData){
+      let listitemtitle=document.createElement("li");
+      let listitemimage=document.createElement("li");
       let listitem=document.createElement("li");
-      listitem.innerHTML=recipe.name + "    "+ recipe.description;
-      listitem.innerHTML+=`<button class='btn btn-warning' onclick="deleterecipe('${recipe.recipeid}')"> delete </button>`
-      listitem.innerHTML+=`<button class='btn btn-warning' data-toggle="modal" data-target="#myModal2" onclick="getid('${recipe.recipeid}')"> edit </button>`
+      listitemimage.innerHTML='<img src="https://static.toiimg.com/photo/68283907.cms" class="rounded" alt="Cinque Terre" width="204" height="136">'
+      listitemtitle.innerHTML="<dt style='font-family:montserrat bold;' >"+recipe.name + "</dt>"
+      listitem.innerHTML="<dd>"+ "-"+recipe.description + "</dd>";
+      listitem.innerHTML+=`<button class='btn btn-outline-warning' data-target="#myModal3" data-toggle="modal" title="Read Instructions" onclick="displayInstructions('${recipe.name}','${recipe.instructions}','${recipe.time}')"> <i class="material-icons">chrome_reader_mode</i> </button>`
+      listitem.innerHTML+=`<button class='btn btn-outline-warning' data-target="#myModal2" data-toggle="modal"  title="Edit Recipe" onclick="getid('${recipe.recipeid}')"> <i class="material-icons">create</i> </button>`
+      listitem.innerHTML+=`<button class='btn btn-outline-warning' data-toggle="tooltip" title="Delete Recipe" onclick="deleterecipe('${recipe.recipeid}')"> <i class="material-icons">delete</i> </button>`
+      listitem.innerHTML+=`<br></br>`
+      list.appendChild(listitemtitle);
+      list.appendChild(listitemimage);
       list.appendChild(listitem);
     }
   }
@@ -253,6 +299,14 @@
     }
     request.send();
   }
+
+  function displayInstructions(name,instructions,time){
+    document.getElementById("rname").innerHTML=name;
+    document.getElementById("rinstructions").innerHTML=instructions;
+    document.getElementById("rtime").innerHTML=time;
+    }
+    
+  
     </script>
 
 </html>
